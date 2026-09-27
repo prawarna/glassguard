@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('glass', {
   cleaner: {
     scan: () => ipcRenderer.invoke('cleaner:scan'),
     clean: (categoryIds) => ipcRenderer.invoke('cleaner:clean', categoryIds),
+    onProgress: (cb) => ipcRenderer.on('cleaner:progress', (_e, progress) => cb(progress)),
   },
   security: {
     scan: () => ipcRenderer.invoke('security:scan'),

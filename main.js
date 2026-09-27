@@ -63,8 +63,10 @@ ipcMain.handle('cleaner:scan', async () => {
   return cleaner.scanJunk();
 });
 
-ipcMain.handle('cleaner:clean', async (_event, categoryIds) => {
-  return cleaner.cleanJunk(categoryIds);
+ipcMain.handle('cleaner:clean', async (event, categoryIds) => {
+  return cleaner.cleanJunk(categoryIds, (progress) => {
+    event.sender.send('cleaner:progress', progress);
+  });
 });
 
 // --- Security scan ---

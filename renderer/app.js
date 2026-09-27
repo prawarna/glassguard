@@ -138,20 +138,34 @@ function updateCleanerTotal() {
   btnCleanSelected.disabled = checked.length === 0;
 }
 
+const categoryLabel = (id) => (lastScan.find((c) => c.id === id) || {}).label || id;
+
+window.glass.cleaner.onProgress((progress) => {
+  if (progress.stage === 'category-start') {
+    cleanerStatus.textContent = `Cleaning ${categoryLabel(progress.categoryId)}...`;
+  } else if (progress.stage === 'deleting') {
+    cleanerStatus.textContent = `Cleaning ${categoryLabel(progress.categoryId)}... ${progress.filesDeleted.toLocaleString()} files removed so far`;
+  } else if (progress.stage === 'category-done' && progress.freed !== undefined) {
+    cleanerStatus.textContent = `Finished ${categoryLabel(progress.categoryId)} — freed ${formatBytes(progress.freed)}`;
+  }
+});
+
 btnCleanSelected.addEventListener('click', async () => {
   const checked = [...cleanerList.querySelectorAll('input[type="checkbox"]:checked')].map((cb) => cb.dataset.id);
   if (!checked.length) return;
   btnCleanSelected.disabled = true;
-  cleanerStatus.textContent = 'Cleaning...';
+  btnScanJunk.disabled = true;
+  cleanerStatus.textContent = 'Starting...';
   try {
     const result = await window.glass.cleaner.clean(checked);
-    cleanerStatus.textContent = `Freed ${formatBytes(result.freed)} across ${result.deleted.toLocaleString()} files.`;
+    cleanerStatus.textContent = `Done — freed ${formatBytes(result.freed)} across ${result.deleted.toLocaleString()} files.`;
     lastScan = await window.glass.cleaner.scan();
     renderJunkList();
   } catch (e) {
     cleanerStatus.textContent = `Error: ${e.message}`;
   }
   btnCleanSelected.disabled = false;
+  btnScanJunk.disabled = false;
 });
 
 // --- Security ---
