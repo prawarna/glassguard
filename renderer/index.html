@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>GlassGuard</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-aurora"></div>
+
+  <div class="titlebar">
+    <div class="titlebar-drag">
+      <span class="brand-dot"></span>
+      <span class="brand-name">GlassGuard</span>
+    </div>
+    <div class="titlebar-controls">
+      <button id="btn-min" class="tbtn" title="Minimize">&#8211;</button>
+      <button id="btn-max" class="tbtn" title="Maximize">&#9723;</button>
+      <button id="btn-close" class="tbtn tbtn-close" title="Close">&times;</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <nav class="sidebar glass">
+      <div class="nav-group">
+        <button class="nav-item active" data-view="dashboard">
+          <span class="nav-icon">&#9673;</span> Dashboard
+        </button>
+        <button class="nav-item" data-view="cleaner">
+          <span class="nav-icon">&#10052;</span> Cleaner
+        </button>
+        <button class="nav-item" data-view="security">
+          <span class="nav-icon">&#128737;</span> Security
+        </button>
+        <button class="nav-item" data-view="processes">
+          <span class="nav-icon">&#9881;</span> Processes
+        </button>
+      </div>
+      <div class="sidebar-footer">
+        <span class="badge-oss">Free &amp; Open Source</span>
+      </div>
+    </nav>
+
+    <main class="content">
+      <!-- DASHBOARD -->
+      <section id="view-dashboard" class="view active">
+        <h1 class="view-title">System Overview</h1>
+        <div class="grid-cards">
+          <div class="card glass ring-card">
+            <div class="ring" id="ring-cpu" style="--pct:0"><span id="cpu-pct">0%</span></div>
+            <div class="card-label">CPU</div>
+            <div class="card-sub" id="cpu-name">&mdash;</div>
+          </div>
+          <div class="card glass ring-card">
+            <div class="ring" id="ring-mem" style="--pct:0"><span id="mem-pct">0%</span></div>
+            <div class="card-label">Memory</div>
+            <div class="card-sub" id="mem-detail">&mdash;</div>
+          </div>
+          <div class="card glass ring-card">
+            <div class="ring" id="ring-disk" style="--pct:0"><span id="disk-pct">0%</span></div>
+            <div class="card-label">Disk (C:)</div>
+            <div class="card-sub" id="disk-detail">&mdash;</div>
+          </div>
+          <div class="card glass net-card">
+            <div class="card-label">Network</div>
+            <div class="net-row"><span>&#8595; Down</span><strong id="net-down">0 KB/s</strong></div>
+            <div class="net-row"><span>&#8593; Up</span><strong id="net-up">0 KB/s</strong></div>
+          </div>
+        </div>
+
+        <div class="card glass table-card">
+          <div class="card-label">Top Processes</div>
+          <table class="proc-table" id="dash-proc-table">
+            <thead><tr><th>Process</th><th>CPU %</th><th>Memory %</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CLEANER -->
+      <section id="view-cleaner" class="view">
+        <h1 class="view-title">Junk &amp; Temp Cleaner</h1>
+        <div class="card glass">
+          <div class="cleaner-toolbar">
+            <button id="btn-scan-junk" class="btn-primary">Scan for Junk</button>
+            <div class="cleaner-total">Total selected: <strong id="cleaner-total-size">0 B</strong></div>
+          </div>
+          <div id="cleaner-list" class="cleaner-list">
+            <p class="hint">Click "Scan for Junk" to see what can be safely removed.</p>
+          </div>
+          <div class="cleaner-actions">
+            <button id="btn-clean-selected" class="btn-danger" disabled>Clean Selected</button>
+            <span id="cleaner-status" class="status-text"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section id="view-security" class="view">
+        <h1 class="view-title">Security Center</h1>
+        <div class="card glass">
+          <div class="cleaner-toolbar">
+            <button id="btn-scan-security" class="btn-primary">Run Security Scan</button>
+            <span id="security-stage" class="status-text"></span>
+          </div>
+          <div id="security-results" class="security-results">
+            <p class="hint">Runs heuristic checks: Defender status, firewall, startup items, unusual running processes, hosts file, and ransom-note patterns. This is not a substitute for a full antivirus engine — pair it with Windows Defender or another AV for real-time protection.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROCESSES -->
+      <section id="view-processes" class="view">
+        <h1 class="view-title">Live Processes</h1>
+        <div class="card glass table-card">
+          <table class="proc-table" id="full-proc-table">
+            <thead><tr><th>Process</th><th>PID</th><th>CPU %</th><th>Memory %</th><th>Path</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
